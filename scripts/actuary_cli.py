@@ -18,9 +18,9 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.matcher import NutritionMatcher, categorize
+from src.matcher import NutritionMatcher
 from src.models import Constraints, MenuItem
-from src.optimizer import NutritionActuary, build_meal_details, format_report
+from src.optimizer import NutritionActuary, build_meal_details, categorize, format_report
 
 
 def load_menu(raw):

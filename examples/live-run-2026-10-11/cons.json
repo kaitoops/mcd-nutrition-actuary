@@ -1,0 +1,8 @@
+{
+  "budget": 40,
+  "max_kcal": 600,
+  "min_protein": 25,
+  "max_sodium": null,
+  "blacklist": [],
+  "preference": "weight_loss"
+}

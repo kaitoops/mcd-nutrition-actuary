@@ -68,6 +68,33 @@ WorkBuddy 编写零第三方依赖的精算引擎并跑测试迭代：
 
 WorkBuddy 抓取官方 `CONTEST_DECLARATION.md` **原样落盘**（一字不改），撰写 README（含与竞品差异化对比表）与 MCP_INTEGRATION.md，初始化 git 并提交（`24b0981`，17 文件 1456 行）。推送时 HTTPS 直连被重置，WorkBuddy 诊断后切换 SSH 通道完成推送。
 
+### Phase 6 — 真实联跑（2026-10-11 早 7 点实况）
+
+报名提交（Issue #402）后，WorkBuddy 按 `skill/SKILL.md` 编排做了一次**全真实链路联跑**（无任何 mock，全部为 mcd-mcp 实时数据）：
+
+```
+① query-nearby-stores  → 深圳科技园 5 店，锁定同方信息港店(storeCode=1420762, 403m, 营业中)
+② list-nutrition-foods → 160 餐品营养数据实时拉取
+③ query-meals          → 实时菜单。⚠️ 关键发现：7:12 处于早餐时段（至 10:15），
+                          全菜单为早餐品类——正餐汉堡不在售，精算必须按当前可点菜单执行
+④ query-store-coupons  → 账户无券（空数组）→ 无券兜底路径生效
+⑤ 本地 CLI 精算        → 32 个真实单品枚举 → Top3 方案（见 examples/live-run-2026-10-11/）
+⑥ calculate-price      → 方案1 实时复核：3200 分 = 32.0 元，与引擎输出完全一致 ✓
+```
+
+**联跑产出 Top3**（约束：≤40 元 / ≤600 kcal / ≥25g 蛋白 / 减脂偏好）：
+
+| 方案 | 组合 | 实付 | 热量 | 蛋白 | 得分 |
+|---|---|---|---|---|---|
+| 1 | 双层原味板烧鸡腿麦满分 + 小杯玉米杯 | 32.0 元 | 408 kcal | 25g | 0.741 |
+| 2 | 原味板烧鸡腿炒双蛋堡 | 18.0 元 | 419 kcal | 27g | 0.739 |
+| 3 | 猪柳蛋麦满分 + 优品豆浆 | 27.5 元 | 589 kcal | 31g | 0.657 |
+
+**联跑额外收益**：
+- 抓到并修复 CLI 真实 bug：`from src.matcher import categorize` 引用错位（categorize 实际在 optimizer.py），此 bug 在单测中不可见（单测直接测 optimizer），只有真实链路才会暴露——证明"联跑不可省"
+- 意外验证：MCP 下单系统显示 4437 对应官方名称为"小杯玉米杯"，与本项目名称匹配器的匹配结果完全对齐（菜单名"玉米杯"→营养表"小杯玉米杯" 53kcal）
+- 全程 MCP 调用 5 次（≤8 次预算内），证实省算力主张
+
 ## WorkBuddy 价值总结
 
 | 环节 | 人类 | WorkBuddy |
