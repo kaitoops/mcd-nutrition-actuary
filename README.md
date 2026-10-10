@@ -5,6 +5,8 @@
 
 基于 [麦当劳中国官方 MCP 服务](https://github.com/M-China/mcd-mcp-server)开发的参赛 Skill —— 2026 麦当劳程序员创意开发大赛（M-CODE）作品。
 
+**English**: McNutrition Actuary is an AI skill built on McDonald's China official MCP server. Give it a budget, a calorie cap and a protein floor, and it exhaustively enumerates ~10,000 menu combinations to return the Top 3 meal plans — each with live-priced checkout totals (via `calculate-price`), full nutrition facts, and exercise equivalents. It also finds same-price menu swaps that cut hundreds of kcal (medium fries → corn cup: −236 kcal and ¥0.5 cheaper). Zero third-party dependencies, deterministic local optimizer, ≤8 MCP calls per consultation. Entry for the 2026 McDonald's China Developer Innovation Challenge.
+
 ## ✨ 它能做什么
 
 | 模式 | 你说 | 它做 |
